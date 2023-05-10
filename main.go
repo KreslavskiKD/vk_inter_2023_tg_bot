@@ -208,7 +208,7 @@ func (b *GifBot) Start() {
 			if prevCmd == "Your Request" {
 				request := update.Message.Text
 				msgText += getGifs(request, b)
-			} else if == "I'm lucky" {
+			} else if prevCmd == "I'm lucky" {
 				request := "random"
 				msgText += getGifs(request, b)
 			} else {
