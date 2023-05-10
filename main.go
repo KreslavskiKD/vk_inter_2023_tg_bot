@@ -241,6 +241,7 @@ func getGifs(query string, b *GifBot) string {
 
 		for i, gfy := range page.Gfys {
 			msgText += fmt.Sprintf("\t(#%d): %#v\n", i, gfy)
+			log.Printf("\t(#%d): %#v\n", i, gfy)
 		}
 	}
 	return msgText
