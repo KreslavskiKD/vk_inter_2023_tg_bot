@@ -67,7 +67,7 @@ func initKeyboards() []tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("<- Back"),
 		),
 	)
-	keyboards[3] = tgbotapi.NewReplyKeyboard(
+	keyboards[4] = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("I'm lucky"),
 		),
@@ -156,6 +156,7 @@ func (b *GifBot) Start() {
 			prevCmd = "Capybaras"
 		case "Your Request":
 			msgText = "Please, enter the request"
+			keyboardNum = 4
 			prevCmd = "Your Request"
 		case "<- Back":
 			msgText = "What do you want?"
@@ -199,13 +200,16 @@ func (b *GifBot) Start() {
 		case "Capybaras memes":
 			if prevCmd == "Capybaras" {
 				msgText = "Ok\n"
-				keyboardNum = 1
+				keyboardNum = 3
 				prevCmd = "Capybaras memes"
 				msgText += getGifs("capybaras meme", b)
 			}
 		default:
 			if prevCmd == "Your Request" {
 				request := update.Message.Text
+				msgText += getGifs(request, b)
+			} else if == "I'm lucky" {
+				request := "random"
 				msgText += getGifs(request, b)
 			} else {
 				msgText = "You have send me something that I apparently can't understand."
