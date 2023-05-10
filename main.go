@@ -9,10 +9,46 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-
-	"./dto"
-	"./keyboards"
 )
+
+type Update struct {
+	UpdateId int     `json:"update_id"`
+	Message  Message `json:"message"`
+}
+
+type Message struct {
+	Chat Chat   `json:"chat"`
+	Text string `json:"text"`
+}
+
+type Chat struct {
+	ChatId int `json:"id"`
+}
+
+type RestResponse struct {
+	Result []Update `json:"result"`
+}
+
+type BotMessage struct {
+	ChatId      int                 `json:"chat_id"`
+	Text        string              `json:"text"`
+	ReplyMarkup ReplyKeyboardMarkup `json:"reply_markup"`
+}
+
+type ReplyKeyboardMarkup struct {
+	Keyboard [][]KeyboardButton `json:"keyboard"`
+}
+
+type KeyboardButton struct {
+	Text map[string]string `json:"text"`
+}
+
+var StartKeyboard = [][]KeyboardButton{
+	{{map[string]string{"text": "Видео"}}},
+	{{map[string]string{"text": "Музыка"}}},
+	{{map[string]string{"text": "Мемы"}}},
+	{{map[string]string{"text": "Соцсети"}}},
+}
 
 func main() {
 	botToken, exists := os.LookupEnv("TELEGRAM_BOT_TOKEN")
@@ -39,7 +75,7 @@ func main() {
 	}
 }
 
-func getUpdates(botUrl string, offset int) ([]dto.Update, error) {
+func getUpdates(botUrl string, offset int) ([]Update, error) {
 	resp, err := http.Get(botUrl + "/getUpdates" + "?offset=" + strconv.Itoa(offset))
 	if err != nil {
 		return nil, err
@@ -51,7 +87,7 @@ func getUpdates(botUrl string, offset int) ([]dto.Update, error) {
 		return nil, err
 	}
 
-	var restResponse dto.RestResponse
+	var restResponse RestResponse
 	err = json.Unmarshal(body, &restResponse)
 	if err != nil {
 		return nil, err
@@ -60,8 +96,8 @@ func getUpdates(botUrl string, offset int) ([]dto.Update, error) {
 	return restResponse.Result, nil
 }
 
-func respond(botUrl string, update dto.Update) error {
-	var botMessage dto.BotMessage
+func respond(botUrl string, update Update) error {
+	var botMessage BotMessage
 	botMessage.ChatId = update.Message.Chat.ChatId
 
 	switch update.Message.Text {
@@ -84,12 +120,12 @@ func respond(botUrl string, update dto.Update) error {
 	return nil
 }
 
-func handleStart(botMessage *dto.BotMessage, update *dto.Update) {
+func handleStart(botMessage *BotMessage, update *Update) {
 	botMessage.Text = "Привет, это бот для фанатов Александра Пушного, тут можно найти разную инфу, видео, мемы, песни."
-	botMessage.ReplyMarkup.Keyboard = keyboards.StartKeyboard
+	botMessage.ReplyMarkup.Keyboard = StartKeyboard
 }
 
-func handleDefault(botMessage *dto.BotMessage, update *dto.Update) {
+func handleDefault(botMessage *BotMessage, update *Update) {
 	log.Println("Unknown message: " + update.Message.Text)
 	botMessage.Text = "Извини, я не знаю такой команды"
 }
