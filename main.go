@@ -163,47 +163,45 @@ func (b *GifBot) Start() {
 			keyboardNum = 0
 			prevCmd = ""
 		case "Just Cats":
-			if prevCmd == "Cats" {
-				msgText = "Ok\n"
-				keyboardNum = 1
-				prevCmd = "Just Cats"
-				msgText += getGifs("cats", b)
-			}
+
+			msgText = "Ok\n"
+			keyboardNum = 1
+			prevCmd = "Just Cats"
+			msgText += getGifs("cats", b)
+
 		case "Just Dogs":
-			if prevCmd == "Dogs" {
-				msgText = "Ok\n"
-				keyboardNum = 2
-				prevCmd = "Just Dogs"
-				msgText += getGifs("dogs", b)
-			}
+
+			msgText = "Ok\n"
+			keyboardNum = 2
+			prevCmd = "Just Dogs"
+			msgText += getGifs("dogs", b)
+
 		case "Just Capybaras":
-			if prevCmd == "Capybaras" {
-				msgText = "Ok\n"
-				keyboardNum = 3
-				prevCmd = "Just Capybaras"
-				msgText += getGifs("capybaras", b)
-			}
+
+			msgText = "Ok\n"
+			keyboardNum = 3
+			prevCmd = "Just Capybaras"
+			msgText += getGifs("capybaras", b)
+
 		case "Cat memes":
-			if prevCmd == "Cats" {
-				msgText = "Ok\n"
-				keyboardNum = 1
-				prevCmd = "Cat memes"
-				msgText += getGifs("cats meme", b)
-			}
+
+			msgText = "Ok\n"
+			keyboardNum = 1
+			prevCmd = "Cat memes"
+			msgText += getGifs("cats meme", b)
+
 		case "Dog memes":
-			if prevCmd == "Dogs" {
-				msgText = "Ok\n"
-				keyboardNum = 2
-				prevCmd = "Dog memes"
-				msgText += getGifs("dogs meme", b)
-			}
+			msgText = "Ok\n"
+			keyboardNum = 2
+			prevCmd = "Dog memes"
+			msgText += getGifs("dogs meme", b)
 		case "Capybaras memes":
-			if prevCmd == "Capybaras" {
-				msgText = "Ok\n"
-				keyboardNum = 3
-				prevCmd = "Capybaras memes"
-				msgText += getGifs("capybaras meme", b)
-			}
+
+			msgText = "Ok\n"
+			keyboardNum = 3
+			prevCmd = "Capybaras memes"
+			msgText += getGifs("capybaras meme", b)
+
 		default:
 			if prevCmd == "Your Request" {
 				request := update.Message.Text
@@ -212,7 +210,7 @@ func (b *GifBot) Start() {
 				request := "random"
 				msgText += getGifs(request, b)
 			} else {
-				msgText = "You have send me something that I apparently can't understand."
+				msgText = update.Message.Text
 				prevCmd = ""
 			}
 		}
