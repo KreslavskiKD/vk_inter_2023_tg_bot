@@ -51,9 +51,9 @@ var StartKeyboard = [][]KeyboardButton{
 }
 
 func main() {
-	botToken, exists := os.LookupEnv("TELEGRAM_BOT_TOKEN")
+	botToken := os.Getenv("TELEGRAM_BOT_TOKEN")
 
-	if !exists {
+	if botToken == "" {
 		log.Println("TELEGRAM_BOT_TOKEN environment variable does not exist")
 		return
 	}
