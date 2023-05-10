@@ -3,8 +3,10 @@ package main
 // comment just to restart
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
+	"time"
 
 	"log"
 
@@ -13,6 +15,7 @@ import (
 )
 
 func main() {
+	rand.NewSource(time.Now().UnixNano())
 	bot, err := NewGifBot()
 	if err != nil {
 		log.Fatal(err)
@@ -69,7 +72,7 @@ func initKeyboards() []tgbotapi.ReplyKeyboardMarkup {
 	)
 	keyboards[4] = tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("I'm lucky"),
+			tgbotapi.NewKeyboardButton("Random"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("<- Back"),
@@ -202,15 +205,18 @@ func (b *GifBot) Start() {
 			prevCmd = "Capybaras memes"
 			msgText += getGifs("capybaras meme", b)
 
+		case "Random":
+			request := "random"
+			msgText += getGifs(request, b)
+			prevCmd = "Random"
 		default:
 			if prevCmd == "Your Request" {
 				request := update.Message.Text
 				msgText += getGifs(request, b)
-			} else if prevCmd == "I'm lucky" {
-				request := "random"
-				msgText += getGifs(request, b)
+				prevCmd = "Your Request"
 			} else {
-				msgText = update.Message.Text
+				request := update.Message.Text
+				msgText += getGifs(request, b)
 				prevCmd = ""
 			}
 		}
@@ -236,7 +242,8 @@ func getGifs(query string, b *GifBot) string {
 		if err != nil {
 			log.Println(err)
 		}
-		msgText += res.Data[0].URL
+		len := len(res.Data)
+		msgText += res.Data[rand.Intn(len-1)].URL
 	}
 	log.Print(msgText)
 	return msgText
