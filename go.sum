@@ -35,6 +35,8 @@ github.com/orijtech/gfycat v0.0.0-20180404203910-bf3116bbd8fa h1:CEq+teAM3QVRzgH
 github.com/orijtech/gfycat v0.0.0-20180404203910-bf3116bbd8fa/go.mod h1:lsS1nAvSxMF+4juP//7NC/rlAvNOwFGIMYx+BnAEsQE=
 github.com/orijtech/otils v0.0.2 h1:nbdAT171Xo98hOEmfWkuxWnNgoyNscnGMd5YnrXzblg=
 github.com/orijtech/otils v0.0.2/go.mod h1:ptnjhGLL7nB/n55+7NbDs96aFkZHtmj4PCFsgG6aac8=
+github.com/peterhellberg/giphy v0.0.2 h1:+3mdtIVPoyqOpYwQgjyWcHJAaQdoNbrTNkRnuo9uuic=
+github.com/peterhellberg/giphy v0.0.2/go.mod h1:P4rRzLoVaDg/50tI4NxIRsBkV4lFEt5jYA5gyXwQaMg=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/sanzaru/go-giphy v0.0.0-20211118160211-e9e78e55bc7a h1:yY7ZsTCKYqUt/Lf/bsLms8hxvAMnIQPR9i2A8ApK0VI=

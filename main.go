@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"strconv"
@@ -9,7 +8,7 @@ import (
 	"log"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/orijtech/gfycat/v1"
+	"github.com/peterhellberg/giphy"
 )
 
 func main() {
@@ -82,7 +81,7 @@ type GifBot struct {
 	bot          *tgbotapi.BotAPI
 	updateConfig tgbotapi.UpdateConfig
 	keyboards    []tgbotapi.ReplyKeyboardMarkup
-	gfycat       *gfycat.Client
+	giphy        *giphy.Client
 }
 
 func NewGifBot() (*GifBot, error) {
@@ -118,7 +117,7 @@ func NewGifBot() (*GifBot, error) {
 		bot:          bot,
 		updateConfig: upcfg,
 		keyboards:    initKeyboards(),
-		gfycat:       new(gfycat.Client),
+		giphy:        giphy.DefaultClient,
 	}, nil
 }
 
@@ -227,26 +226,19 @@ func (b *GifBot) Start() {
 
 func getGifs(query string, b *GifBot) string {
 	msgText := ""
-	res, err := b.gfycat.Search(context.Background(), &gfycat.Request{
-		Query:  query,
-		InTest: true,
-
-		MaxPageNumber: 1,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for page := range res.Pages {
-		if page.Err != nil {
-			fmt.Printf("%d: err: %v\n", page.PageNumber, page.Err)
-			continue
+	if query == "random" {
+		res, err := b.giphy.Random([]string{"funny"})
+		if err != nil {
+			log.Println(err)
 		}
-
-		for i, gfy := range page.Gfys {
-			msgText += fmt.Sprintf("\t(#%d): %#v\n", i, gfy)
-			log.Printf("\t(#%d): %#v\n", i, gfy)
+		msgText += res.Data.URL
+	} else {
+		res, err := b.giphy.Search([]string{query})
+		if err != nil {
+			log.Println(err)
 		}
+		msgText += res.Data[0].URL
 	}
+	log.Print(msgText)
 	return msgText
 }
