@@ -9,6 +9,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+
+	"./dto"
+	"./keyboards"
 )
 
 func main() {
@@ -36,7 +39,7 @@ func main() {
 	}
 }
 
-func getUpdates(botUrl string, offset int) ([]Update, error) {
+func getUpdates(botUrl string, offset int) ([]dto.Update, error) {
 	resp, err := http.Get(botUrl + "/getUpdates" + "?offset=" + strconv.Itoa(offset))
 	if err != nil {
 		return nil, err
@@ -48,7 +51,7 @@ func getUpdates(botUrl string, offset int) ([]Update, error) {
 		return nil, err
 	}
 
-	var restResponse RestResponse
+	var restResponse dto.RestResponse
 	err = json.Unmarshal(body, &restResponse)
 	if err != nil {
 		return nil, err
@@ -57,8 +60,8 @@ func getUpdates(botUrl string, offset int) ([]Update, error) {
 	return restResponse.Result, nil
 }
 
-func respond(botUrl string, update Update) error {
-	var botMessage BotMessage
+func respond(botUrl string, update dto.Update) error {
+	var botMessage dto.BotMessage
 	botMessage.ChatId = update.Message.Chat.ChatId
 
 	switch update.Message.Text {
@@ -81,12 +84,12 @@ func respond(botUrl string, update Update) error {
 	return nil
 }
 
-func handleStart(botMessage *BotMessage, update *Update) {
+func handleStart(botMessage *dto.BotMessage, update *dto.Update) {
 	botMessage.Text = "Привет, это бот для фанатов Александра Пушного, тут можно найти разную инфу, видео, мемы, песни."
-	botMessage.ReplyMarkup.Keyboard = start_keyboard
+	botMessage.ReplyMarkup.Keyboard = keyboards.StartKeyboard
 }
 
-func handleDefault(botMessage *BotMessage, update *Update) {
+func handleDefault(botMessage *dto.BotMessage, update *dto.Update) {
 	log.Println("Unknown message: " + update.Message.Text)
 	botMessage.Text = "Извини, я не знаю такой команды"
 }
